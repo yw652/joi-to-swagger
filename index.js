@@ -1,8 +1,9 @@
 'use strict';
 
 var joi = require('joi');
-var find = require('lodash.find');
-var get = require('lodash.get');
+var find = require('lodash/find');
+var get = require('lodash/get');
+var each = require('lodash/each');
 
 module.exports = exports = function parse (schema, existingDefinitions) {
 	// inspect(schema);
@@ -243,7 +244,7 @@ var parseAsType = {
 
 		var combinedDefinitions = Object.assign({}, existingDefinitions || {}, newDefinitionsByRef || {});
 
-		schema._inner.children.forEach((child) => {
+		each(schema._inner.children, child => {
 			var key = child.key;
 			var prop = exports(child.schema, combinedDefinitions);
 
@@ -280,8 +281,3 @@ function meta (schema, key) {
 function refDef (name) {
 	return { $ref: '#/definitions/' + name };
 }
-
-// var inspectU = require('util').inspect;
-// function inspect (value) {
-// 	console.error(inspectU(value, { colors: true, depth: 10 }));
-// }
